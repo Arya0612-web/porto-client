@@ -43,6 +43,8 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   useEffect(() => {
     // Simulasi fetch data dari API
     fetchDashboardData();
@@ -54,7 +56,7 @@ const Dashboard = () => {
 
       const token = localStorage.getItem("token");
 
-      const res = await fetch("${API_BASE_URL}/api/dashboard/stats", {
+      const res = await fetch(`${API_BASE_URL}/api/dashboard/stats`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
