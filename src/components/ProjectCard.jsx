@@ -8,10 +8,7 @@ const ProjectCard = ({ project }) => {
   
   const technologies = project.technologies ? project.technologies.split(',').map(tech => tech.trim()) : [];
 
-  // Base URL untuk backend - sesuaikan dengan environment Anda
-  const API_BASE_URL = window.location.origin.includes('localhost') 
-    ? 'http://localhost:5000' 
-    : window.location.origin; // Untuk production
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   // Fungsi untuk mendapatkan URL gambar yang benar
   const getImageUrl = () => {
