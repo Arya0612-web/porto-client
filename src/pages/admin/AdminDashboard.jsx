@@ -45,7 +45,7 @@ const AdminDashboard = () => {
   const [messagesLoading, setMessagesLoading] = useState(false);
 
   const user = JSON.parse(localStorage.getItem('user') || '{}');
-  const API_BASE_URL = 'http://localhost:5000';
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const token = localStorage.getItem('token');
