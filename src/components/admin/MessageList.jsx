@@ -56,7 +56,7 @@ const MessageList = () => {
         ...(searchTerm && { search: searchTerm })
       });
 
-      const response = await axios.get(`http://localhost:5000/api/messages?${params}`, {
+      const response = await axios.get(`${API_BASE_URL}/api/messages?${params}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
