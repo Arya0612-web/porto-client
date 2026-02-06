@@ -42,6 +42,8 @@ const MessageList = () => {
     today: 0
   });
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   const fetchMessages = async () => {
     try {
       setLoading(true);
@@ -75,7 +77,7 @@ const MessageList = () => {
   const fetchStats = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('/api/messages/stats/summary', {
+      const response = await axios.get(`${API_BASE_URL}/api/messages/stats/summary`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -95,7 +97,7 @@ const MessageList = () => {
   const handleStatusChange = async (id, newStatus) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`/api/messages/${id}`, 
+      await axios.put(`{API_BASE_URL}/api/messages/${id}`, 
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );
