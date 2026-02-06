@@ -66,7 +66,7 @@ const AdminDashboard = () => {
   const fetchProjects = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('/api/projects', {
+      const response = await axios.get(`${API_BASE_URL}/api/projects`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setProjects(response.data);
