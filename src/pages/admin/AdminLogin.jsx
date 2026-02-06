@@ -10,13 +10,15 @@ const AdminLogin = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
     try {
-      const response = await axios.post('/api/admin/login', {
+      const response = await axios.post(`${API_BASE_URL}/api/admin/login`, {
         username,
         password
       });
