@@ -19,6 +19,8 @@ const ProjectForm = ({ project, onSubmit, onCancel }) => {
   const [imagePreview, setImagePreview] = useState(null);
   const [errors, setErrors] = useState({});
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   useEffect(() => {
     if (project) {
       setFormData({
@@ -91,7 +93,7 @@ const ProjectForm = ({ project, onSubmit, onCancel }) => {
       const formData = new FormData();
       formData.append('image', imageFile);
 
-      const response = await axios.post('/api/upload', formData, {
+      const response = await axios.post(`${API_BASE_URL}/api/upload`, formData, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
@@ -139,12 +141,12 @@ const ProjectForm = ({ project, onSubmit, onCancel }) => {
 
       if (project) {
         // Update existing project
-        await axios.put(`/api/projects/${project.id}`, projectData, {
+        await axios.put(`${API_BASE_URL}/api/projects/${project.id}`, projectData, {
           headers: { Authorization: `Bearer ${token}` }
         });
       } else {
         // Create new project
-        await axios.post('/api/projects', projectData, {
+        await axios.post(`${API_BASE_URL}/api/projects`, projectData, {
           headers: { Authorization: `Bearer ${token}` }
         });
       }
