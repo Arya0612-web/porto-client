@@ -14,6 +14,7 @@ import {
 import { FiSend, FiUser, FiMail, FiMessageSquare } from 'react-icons/fi';
 
 const ContactSection = () => {
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -68,6 +69,8 @@ const ContactSection = () => {
     return isValid;
   };
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -80,7 +83,7 @@ const ContactSection = () => {
 
     try {
       // Gunakan endpoint yang sesuai
-      const response = await fetch('${API_BASE_URL}/api/contact', {
+      const response = await fetch(`${API_BASE_URL}/api/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
