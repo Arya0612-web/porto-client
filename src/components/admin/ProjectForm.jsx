@@ -31,7 +31,7 @@ const ProjectForm = ({ project, onSubmit, onCancel }) => {
         project_url: project.project_url || '',
         github_url: project.github_url || '',
         category: project.category || '',
-        featured: project.featured || false
+        featured: project.featured === 1 ? true : false
       });
       
       if (project.image_url) {
@@ -127,7 +127,8 @@ const ProjectForm = ({ project, onSubmit, onCancel }) => {
       form.append("project_url", formData.project_url);
       form.append("github_url", formData.github_url);
       form.append("category", formData.category);
-      form.append("featured", formData.featured);
+      form.append("featured", formData.featured ? 1 : 0);
+
 
       if (imageFile) {
         form.append("image", imageFile);
