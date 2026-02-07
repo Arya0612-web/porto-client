@@ -84,63 +84,71 @@ const ProjectForm = ({ project, onSubmit, onCancel }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleImageUpload = async () => {
-    if (!imageFile) return null;
+  // const handleImageUpload = async () => {
+  //   if (!imageFile) return null;
 
-    setUploading(true);
+  //   setUploading(true);
+  //   try {
+  //     const token = localStorage.getItem('token');
+  //     const formData = new FormData();
+  //     formData.append('image', imageFile);
+
+  //     const response = await axios.post(`${API_BASE_URL}/api/upload`, formData, {
+  //       headers: {
+  //         'Authorization': `Bearer ${token}`,
+  //         'Content-Type': 'multipart/form-data'
+  //       }
+  //     });
+
+  //     return response.data.path;
+  //   } catch (error) {
+  //     console.error('Error uploading image:', error);
+  //     setErrors(prev => ({ ...prev, image: 'Failed to upload image' }));
+  //     return null;
+  //   } finally {
+  //     setUploading(false);
+  //   }
+  // };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validateForm()) return;
+
+    setLoading(true);
+
     try {
-      const token = localStorage.getItem('token');
-      const formData = new FormData();
-      formData.append('image', imageFile);
+      const token = localStorage.getItem("token");
 
-      const response = await axios.post(`${API_BASE_URL}/api/upload`, formData, {
+      const form = new FormData();
+      form.append("title", formData.title);
+      form.append("description", formData.description);
+      form.append("technologies", formData.technologies);
+      form.append("project_url", formData.project_url);
+      form.append("github_url", formData.github_url);
+      form.append("category", formData.category);
+      form.append("featured", formData.featured);
+
+      if (imageFile) {
+        form.append("image", imageFile);
+      }
+
+      await axios.post(`${API_BASE_URL}/api/projects`, form, {
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data'
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
-      return response.data.path;
-    } catch (error) {
-      console.error('Error uploading image:', error);
-      setErrors(prev => ({ ...prev, image: 'Failed to upload image' }));
-      return null;
+      // ✅ Redirect setelah upload selesai
+      onSubmit();
+
+    } catch (err) {
+      console.log("Upload error:", err);
     } finally {
-      setUploading(false);
+      setLoading(false);
     }
   };
 
-  const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  const token = localStorage.getItem("token");
-
-  const form = new FormData();
-  form.append("title", formData.title);
-  form.append("description", formData.description);
-  form.append("technologies", formData.technologies);
-  form.append("project_url", formData.project_url);
-  form.append("github_url", formData.github_url);
-  form.append("category", formData.category);
-  form.append("featured", formData.featured);
-
-  if (imageFile) {
-    form.append("image", imageFile); // ✅ file asli dikirim
-  }
-
-  try {
-    await axios.post(`${API_BASE_URL}/api/projects`, form, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
-      },
-    });
-
-    onSubmit();
-  } catch (err) {
-    console.log(err);
-  }
-};
 
 
   return (
