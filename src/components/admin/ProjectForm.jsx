@@ -111,54 +111,37 @@ const ProjectForm = ({ project, onSubmit, onCancel }) => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
+  e.preventDefault();
 
-    setLoading(true);
-    setErrors({});
+  const token = localStorage.getItem("token");
 
-    try {
-      const token = localStorage.getItem('token');
-      let imageUrl = formData.image_url;
+  const form = new FormData();
+  form.append("title", formData.title);
+  form.append("description", formData.description);
+  form.append("technologies", formData.technologies);
+  form.append("project_url", formData.project_url);
+  form.append("github_url", formData.github_url);
+  form.append("category", formData.category);
+  form.append("featured", formData.featured);
 
-      if (imageFile) {
-        const uploadedPath = await handleImageUpload();
-        if (uploadedPath) {
-          imageUrl = uploadedPath;
-        } else {
-          setLoading(false);
-          return;
-        }
-      }
+  if (imageFile) {
+    form.append("image", imageFile); // ✅ file asli dikirim
+  }
 
-      const projectData = {
-        ...formData,
-        image_url: imageUrl
-      };
+  try {
+    await axios.post(`${API_BASE_URL}/api/projects`, form, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
-      if (project) {
-        // Update existing project
-        await axios.put(`${API_BASE_URL}/api/projects/${project.id}`, projectData, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-      } else {
-        // Create new project
-        await axios.post(`${API_BASE_URL}/api/projects`, projectData, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-      }
+    onSubmit();
+  } catch (err) {
+    console.log(err);
+  }
+};
 
-      onSubmit();
-    } catch (error) {
-      console.error('Error saving project:', error);
-      setErrors(prev => ({ ...prev, submit: 'Failed to save project' }));
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <>
